@@ -259,13 +259,14 @@ const keys = {
 
 let scrollOffSet = 0
 let score = 0
+let life = 3
+
 
 // 建立元件
 function init() {
   player = new Player()
   goal = new Goal()
 
-  score = 0
 
   platformImage = createImage(platform)
 
@@ -616,6 +617,14 @@ function drawScore() {
   c.fillText("Score: "+score, 50, 100)
 }
 
+function drawLife() {
+  c.font = "40px Arial"
+  c.fillStyle = "#e1597c"
+  for(let i = 0; i< life; i++ ){
+    c.fillText("❤", 950-(i *50), 100)
+  }
+}
+
 // 建立掉落動畫
 function animate() {
   requestAnimationFrame(animate)
@@ -628,6 +637,7 @@ function animate() {
   player.update()
   goal.draw()
   drawScore()
+  drawLife()
 
   // 設定撞到終點
   if (keys.right.pressed && player.position.x + player.width -10 > goal.position.x && player.position.x < goal.position.x + goal.width -20 && player.position.y +player.height > goal.position.y){
@@ -694,10 +704,11 @@ function animate() {
 mice.forEach((mouse, index, mice)=> {
   if (mouse.alive && player.position.x + player.width > mouse.position.x && player.position.x < mouse.position.x + mouse.width && player.height + player.position.y <= mouse.position.y && player.height + player.position.y + player.velocity.y >= mouse.position.y ) {
     score += 50
+
     mouse.alive = false
     setTimeout(() => { mice.splice(index, 1)},1000)
   } else if (mouse.alive && player.position.x + player.width > mouse.position.x && player.position.x < mouse.position.x + mouse.width && player.height + player.position.y > mouse.position.y && player.state === 'normal' ) {
-    score -= 100
+    life -= 1
     player.state = 'super'
     if (player.currentSprite === player.sprites.normal.stand) {
       player.currentSprite = player.sprites.super.stand
@@ -733,19 +744,36 @@ mice.forEach((mouse, index, mice)=> {
 
   if (player.position.x > goal.position.x  && player.position.x  < goal.position.x + goal.width - 12 && player.position.y + player.height > goal.position.y) {
     playerState = 'win'
-    finalScore.innerHTML = score
+    finalScore.innerHTML = `<p>Your score is</p>${score}`
     result.innerHTML = 'YOU WIN!'
     win.style.animation = 'Opacity 1s linear 0.2s forwards'
-    // win.style.display = 'block'
+    keys.left.pressed = false
+    keys.right.pressed = false
     console.log('win')
   }
 
-  //輸的狀況
-  if (player.position.y > canvas.height) {
-    init()
-    console.log('you lose')
+  //跌到谷底
+  if (player.position.y > canvas.height ) {
+    life -= 1
+    if (life > 0){
+      init()
+    }
+    console.log('you die')
   }
   // console.log('playerState', playerState)
+
+  //輸的狀況
+
+  if(life <= 0) {
+    playerState = 'die'
+    finalScore.innerHTML = ''
+    result.innerHTML = 'YOU DIE!'
+    win.style.animation = 'Opacity 1s linear 0.2s forwards'
+    keys.left.pressed = false
+    keys.right.pressed = false
+    console.log('die')
+  }
+  console.log(life)
 }
 
 
@@ -829,7 +857,7 @@ restart.addEventListener('click', ()=> {
   playerState = 'gaming'
   win.style.opacity = 0
   win.style.animation = ''
-  keys.left.pressed = false
-  keys.right.pressed = false
+  score = 0
+  life = 3
   init()
 })
