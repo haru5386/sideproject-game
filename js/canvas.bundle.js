@@ -615,7 +615,8 @@ var keys = {
 };
 var scrollOffSet = 0;
 var score = 0;
-var life = 3; // 建立元件
+var life = 3;
+var doubleJump = 0; // 建立元件
 
 function init() {
   player = new Player();
@@ -1012,9 +1013,14 @@ function animate() {
 
   if (player.position.x + player.width <= goal.position.x + player.width && player.position.x + player.width >= goal.position.x && player.height + player.position.y <= goal.position.y && player.height + player.position.y + player.velocity.y > goal.position.y || player.position.x >= goal.position.x + goal.width - player.width && player.position.x <= goal.position.x + goal.width && player.height + player.position.y <= goal.position.y && player.height + player.position.y + player.velocity.y > goal.position.y || player.position.x >= goal.position.x && player.position.x <= goal.position.x + goal.width && player.height + player.position.y <= goal.position.y + 60 && player.height + player.position.y + player.velocity.y >= goal.position.y + 60) {
     player.velocity.y = 0;
-    console.log('here4');
-  } // 贏的狀況
+  } // 兩段跳躍
 
+
+  if (player.velocity.y === 0) {
+    doubleJump = 0;
+  }
+
+  console.log('doubleJump', doubleJump); // 贏的狀況
 
   if (player.position.x > goal.position.x && player.position.x < goal.position.x + goal.width - 12 && player.position.y + player.height > goal.position.y) {
     playerState = 'win';
@@ -1091,7 +1097,12 @@ addEventListener('keydown', function (_ref5) {
 
       case 87:
         console.log('up');
-        player.velocity.y -= 9;
+        doubleJump += 1;
+
+        if (doubleJump <= 2) {
+          player.velocity.y -= 9;
+        }
+
         break;
     }
   }
