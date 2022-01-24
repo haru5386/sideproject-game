@@ -1,15 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Canvas Boilerplate | Chris Courses</title>
-    <style>
-      body {
-        margin: 0;
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <style>
+    body {
+      margin: 0px;
+      padding: 0;
+      background-color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    .win {
+      background-color: rgba(255, 255, 255, 0.7);
+      width: 800px;
+      height: 400px;
+      position: absolute;
+      border-radius: 30px;
+      border: 8px solid #e1597c;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+
+    }
+
+    .win .content {
+      font-size: 60px;
+      text-align: center;
+      font-weight: 600;
+      color: #48c0b7;
+      position: relative;
+      transform: translateY(-50%);
+      top: 50%;
+    }
+
+    p {
+      color: #e1597c;
+      padding: 0;
+      margin: 0;
+      font-size: 30px;
+    }
+
+    .score {
+      font-size: 80px;
+      color: #e1597c;
+    }
+    .btn {
+      color: #FFF;
+      padding: 10px;
+      background-color: #e1597c;
+      display: inline-block;
+      width: 150px;
+      font-size: 20px;
+      border-radius: 10px;
+      transition: all .3s ease;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #f57293;
+    }
+
+    @keyframes Opacity {
+      from {
+        opacity: 0;
       }
-    </style>
-  </head>
-  <body>
+
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+  <div id="app">
+    <div class="win">
+      <div class="content">
+        <div class="result"></div>
+        <p>Your score is</p>
+        <div class="score">400</div>
+        <div class="btn restart">Restart!</div>
+      </div>
+    </div>
     <canvas></canvas>
-  </body>
+
+  </div>
+  <script src="./js/canvas.js"></script>
+</body>
+
 </html>
