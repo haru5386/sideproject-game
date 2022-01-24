@@ -260,7 +260,7 @@ const keys = {
 let scrollOffSet = 0
 let score = 0
 let life = 3
-
+let doubleJump = 0
 
 // 建立元件
 function init() {
@@ -704,7 +704,6 @@ function animate() {
 mice.forEach((mouse, index, mice)=> {
   if (mouse.alive && player.position.x + player.width > mouse.position.x && player.position.x < mouse.position.x + mouse.width && player.height + player.position.y <= mouse.position.y && player.height + player.position.y + player.velocity.y >= mouse.position.y ) {
     score += 50
-
     mouse.alive = false
     setTimeout(() => { mice.splice(index, 1)},1000)
   } else if (mouse.alive && player.position.x + player.width > mouse.position.x && player.position.x < mouse.position.x + mouse.width && player.height + player.position.y > mouse.position.y && player.state === 'normal' ) {
@@ -736,9 +735,12 @@ mice.forEach((mouse, index, mice)=> {
    (player.position.x >= goal.position.x + goal.width - player.width && player.position.x <= goal.position.x + goal.width && player.height + player.position.y <= goal.position.y && player.height + player.position.y + player.velocity.y > goal.position.y) ||
     (player.position.x >= goal.position.x && player.position.x <= goal.position.x + goal.width   && player.height + player.position.y <= goal.position.y + 60 && player.height + player.position.y + player.velocity.y >= goal.position.y + 60)){
     player.velocity.y = 0
-    console.log('here4')
   } 
-
+  // 兩段跳躍
+  if (player.velocity.y === 0) {
+  doubleJump = 0
+  }
+  console.log('doubleJump',doubleJump)
 
   // 贏的狀況
 
@@ -812,7 +814,10 @@ addEventListener('keydown', ({ keyCode }) => {
 
       case 87:
         console.log('up')
-        player.velocity.y -= 9
+        doubleJump +=1
+        if (doubleJump <=2){
+          player.velocity.y -= 9
+        }
         break
     }
   }
