@@ -56,6 +56,7 @@
       font-size: 80px;
       color: #e1597c;
     }
+
     .btn {
       color: #FFF;
       padding: 10px;
@@ -67,9 +68,89 @@
       transition: all .3s ease;
       cursor: pointer;
     }
+
     .btn:hover {
       background-color: #f57293;
     }
+
+    .loading {
+      display: block;
+      width: 1024px;
+      height: 576px;
+      position: absolute;
+      background-color: #f57293;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .loader,
+    .loader:before,
+    .loader:after {
+      border-radius: 50%;
+      width: 2.5em;
+      height: 2.5em;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+      -webkit-animation: load7 1.8s infinite ease-in-out;
+      animation: load7 1.8s infinite ease-in-out;
+    }
+
+    .loader {
+      color: #ffffff;
+      font-size: 10px;
+      margin: 80px auto;
+      position: relative;
+      text-indent: -9999em;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+    }
+
+    .loader:before,
+    .loader:after {
+      content: '';
+      position: absolute;
+      top: 0;
+    }
+
+    .loader:before {
+      left: -3.5em;
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+    }
+
+    .loader:after {
+      left: 3.5em;
+    }
+
+    @-webkit-keyframes load7 {
+
+      0%,
+      80%,
+      100% {
+        box-shadow: 0 2.5em 0 -1.3em;
+      }
+
+      40% {
+        box-shadow: 0 2.5em 0 0;
+      }
+    }
+
+    @keyframes load7 {
+
+      0%,
+      80%,
+      100% {
+        box-shadow: 0 2.5em 0 -1.3em;
+      }
+
+      40% {
+        box-shadow: 0 2.5em 0 0;
+      }
+    }
+
 
     @keyframes Opacity {
       from {
@@ -82,10 +163,15 @@
     }
   </style>
   <div id="app">
+    <div class="loading">
+      <div class="loader">Loading...</div>
+    </div>
     <div class="win">
       <div class="content">
         <div class="result"></div>
-        <div class="score"><p>Your score is</p>400</div>
+        <div class="score">
+          <p>Your score is</p>400
+        </div>
         <div class="btn restart">Restart!</div>
       </div>
     </div>

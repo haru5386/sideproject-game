@@ -330,7 +330,7 @@ var canvas = document.querySelector('canvas');
 var c = canvas.getContext('2d');
 canvas.height = 576;
 canvas.width = 1024;
-var gravity = 0.3; // 建立玩家實例
+var gravity = 0.3; // 建立玩家建構子
 
 var Player = /*#__PURE__*/function () {
   function Player() {
@@ -400,6 +400,12 @@ var Player = /*#__PURE__*/function () {
         this.frames = 0;
       }
 
+      if (keys.right.pressed) {
+        this.currentSprite = this.sprites.normal.run.right;
+      } else if (keys.left.pressed) {
+        this.currentSprite = this.sprites.normal.run.left;
+      }
+
       this.draw();
       this.position.x += this.velocity.x;
       this.position.y += this.velocity.y; // console.log(this.state)
@@ -411,7 +417,7 @@ var Player = /*#__PURE__*/function () {
   }]);
 
   return Player;
-}(); // 建立老鼠實例
+}(); // 建立老鼠建構子
 
 
 var Mouse = /*#__PURE__*/function () {
@@ -471,7 +477,7 @@ var Mouse = /*#__PURE__*/function () {
   }]);
 
   return Mouse;
-}(); // 建立平台實例
+}(); // 建立平台建構子
 
 
 var Platform = /*#__PURE__*/function () {
@@ -499,7 +505,7 @@ var Platform = /*#__PURE__*/function () {
   }]);
 
   return Platform;
-}(); //建立背景實例
+}(); //建立背景建構子
 
 
 var GenericObject = /*#__PURE__*/function () {
@@ -527,7 +533,7 @@ var GenericObject = /*#__PURE__*/function () {
   }]);
 
   return GenericObject;
-}(); // 建立錢幣實例
+}(); // 建立錢幣建構子
 
 
 var Coin = /*#__PURE__*/function () {
@@ -616,7 +622,8 @@ var keys = {
 var scrollOffSet = 0;
 var score = 0;
 var life = 3;
-var doubleJump = 0; // 建立元件
+var doubleJump = 0;
+var isLoading = true; // 建立元件
 
 function init() {
   player = new Player();
@@ -905,6 +912,16 @@ function drawLife() {
   for (var i = 0; i < life; i++) {
     c.fillText("❤", 950 - i * 50, 100);
   }
+} // 判斷畫面是否跑完
+
+
+function loadingRemove() {
+  if (!isLoading) {
+    var app = document.getElementById("app");
+    var loader = document.querySelector(".loading");
+    app.removeChild(loader);
+    console.log('app', app);
+  }
 } // 建立掉落動畫
 
 
@@ -989,18 +1006,9 @@ function animate() {
       setTimeout(function () {
         mice.splice(index, 1);
       }, 1000);
-    } else if (mouse.alive && player.position.x + player.width > mouse.position.x && player.position.x < mouse.position.x + mouse.width && player.height + player.position.y > mouse.position.y && player.state === 'normal') {
+    } else if (mouse.alive && player.position.x + player.width > mouse.position.x && player.position.x < mouse.position.x + mouse.width && player.height + player.position.y > mouse.position.y && player.position.y + player.velocity.y < mouse.position.y + mouse.height && player.state === 'normal') {
       life -= 1;
       player.state = 'super';
-
-      if (player.currentSprite === player.sprites.normal.stand) {
-        player.currentSprite = player.sprites["super"].stand;
-      } else if (player.currentSprite === player.sprites.normal.run.right) {
-        player.currentSprite = player.sprites["super"].run.right;
-      } else if (player.currentSprite === player.sprites.normal.run.left) {
-        player.currentSprite = player.sprites["super"].run.left;
-      }
-
       player.statement();
     }
   }); // 平台碰撞
@@ -1020,7 +1028,12 @@ function animate() {
     doubleJump = 0;
   }
 
-  console.log('doubleJump', doubleJump); // 贏的狀況
+  console.log('doubleJump', doubleJump); // 貓咪撞到頂
+
+  if (player.position.y + player.velocity.y <= 0) {
+    player.velocity.y = gravity;
+  } // 贏的狀況
+
 
   if (player.position.x > goal.position.x && player.position.x < goal.position.x + goal.width - 12 && player.position.y + player.height > goal.position.y) {
     playerState = 'win';
@@ -1041,26 +1054,26 @@ function animate() {
     }
 
     console.log('you die');
-  } // console.log('playerState', playerState)
-  //輸的狀況
+  } //輸的狀況
 
 
   if (life <= 0) {
-    playerState = 'die';
+    playerState = 'lose';
     finalScore.innerHTML = '';
-    result.innerHTML = 'YOU DIE!';
+    result.innerHTML = 'GAME OVER!';
     win.style.animation = 'Opacity 1s linear 0.2s forwards';
     keys.left.pressed = false;
     keys.right.pressed = false;
-    console.log('die');
+    console.log('lose');
   }
 
-  console.log(life);
+  isLoading = false;
+  console.log('isLoading', isLoading);
 }
 
 init();
 animate();
-drawScore(); // 設定鍵盤
+loadingRemove(); // 設定鍵盤
 
 addEventListener('keydown', function (_ref5) {
   var keyCode = _ref5.keyCode;
@@ -1099,8 +1112,10 @@ addEventListener('keydown', function (_ref5) {
         console.log('up');
         doubleJump += 1;
 
-        if (doubleJump <= 2) {
+        if (doubleJump <= 1) {
           player.velocity.y -= 9;
+        } else if (doubleJump === 2) {
+          player.velocity.y -= 8;
         }
 
         break;
