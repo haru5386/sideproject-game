@@ -400,10 +400,14 @@ var Player = /*#__PURE__*/function () {
         this.frames = 0;
       }
 
-      if (keys.right.pressed) {
+      if (keys.right.pressed && this.state === 'normal') {
         this.currentSprite = this.sprites.normal.run.right;
-      } else if (keys.left.pressed) {
+      } else if (keys.left.pressed && this.state === 'normal') {
         this.currentSprite = this.sprites.normal.run.left;
+      } else if (keys.right.pressed && this.state === 'super') {
+        this.currentSprite = this.sprites["super"].run.right;
+      } else if (keys.left.pressed && this.state === 'super') {
+        this.currentSprite = this.sprites["super"].run.left;
       }
 
       this.draw();
@@ -610,7 +614,7 @@ var goal = '';
 var win = document.querySelector(".win");
 var finalScore = document.querySelector(".score");
 var result = document.querySelector(".result");
-var restart = document.querySelector(".restart");
+var btn = document.querySelector(".btn");
 var keys = {
   right: {
     pressed: false
@@ -1068,12 +1072,15 @@ function animate() {
   }
 
   isLoading = false;
-  console.log('isLoading', isLoading);
 }
 
 init();
 animate();
-loadingRemove(); // 設定鍵盤
+addEventListener("load", function (event) {
+  // All resources finished loading!
+  console.log('finish');
+  loadingRemove();
+}); // 設定鍵盤
 
 addEventListener('keydown', function (_ref5) {
   var keyCode = _ref5.keyCode;
@@ -1161,13 +1168,15 @@ addEventListener('keyup', function (_ref6) {
     }
   }
 });
-restart.addEventListener('click', function () {
-  playerState = 'gaming';
-  win.style.opacity = 0;
-  win.style.animation = '';
-  score = 0;
-  life = 3;
-  init();
+btn.addEventListener('click', function (e) {
+  if (e.target.classList.contains('restart')) {
+    playerState = 'gaming';
+    win.style.opacity = 0;
+    win.style.animation = '';
+    score = 0;
+    life = 3;
+    init();
+  }
 });
 
 /***/ })

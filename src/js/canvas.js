@@ -93,10 +93,14 @@ class Player {
     this.frames++
     if (this.frames > 8) { this.frames = 0 }
 
-    if (keys.right.pressed) {
+    if (keys.right.pressed && this.state === 'normal') {
       this.currentSprite = this.sprites.normal.run.right
-    } else if (keys.left.pressed) {
+    } else if (keys.left.pressed && this.state === 'normal') {
       this.currentSprite = this.sprites.normal.run.left
+    } else if (keys.right.pressed && this.state === 'super') {
+      this.currentSprite = this.sprites.super.run.right
+    } else if (keys.left.pressed && this.state === 'super') {
+      this.currentSprite = this.sprites.super.run.left
     }
     this.draw()
     this.position.x += this.velocity.x
@@ -250,7 +254,7 @@ let goal = ''
 let win = document.querySelector(".win")
 let finalScore = document.querySelector(".score")
 let result = document.querySelector(".result")
-let restart = document.querySelector(".restart")
+let btn = document.querySelector(".btn")
 
 const keys = {
   right: {
@@ -787,13 +791,18 @@ function animate() {
   }
 
   isLoading = false
-  console.log('isLoading', isLoading)
-
 }
 
 init()
 animate()
-loadingRemove()
+
+addEventListener("load", function (event) {
+  // All resources finished loading!
+  console.log('finish')
+  loadingRemove()
+
+});
+
 
 
 // 設定鍵盤
@@ -873,11 +882,14 @@ addEventListener('keyup', ({ keyCode }) => {
   }
 })
 
-restart.addEventListener('click', () => {
-  playerState = 'gaming'
-  win.style.opacity = 0
-  win.style.animation = ''
-  score = 0
-  life = 3
-  init()
+btn.addEventListener('click', (e) => {
+  if (e.target.classList.contains('restart')) {
+    playerState = 'gaming'
+    win.style.opacity = 0
+    win.style.animation = ''
+    score = 0
+    life = 3
+    init()
+  }
+
 })
