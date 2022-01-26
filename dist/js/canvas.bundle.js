@@ -604,7 +604,7 @@ function createImage(imageSrc) {
 
 var platformImage = createImage(_image_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
 var platformSmallTallImage = createImage(_image_platformSmallTall_png__WEBPACK_IMPORTED_MODULE_3__["default"]);
-var playerState = 'gaming';
+var playerState = 'start';
 var player = '';
 var platforms = [];
 var genericObjects = [];
@@ -615,6 +615,7 @@ var win = document.querySelector(".win");
 var finalScore = document.querySelector(".score");
 var result = document.querySelector(".result");
 var btn = document.querySelector(".btn");
+var start = document.querySelector(".start");
 var keys = {
   right: {
     pressed: false
@@ -924,6 +925,7 @@ function loadingRemove() {
     var app = document.getElementById("app");
     var loader = document.querySelector(".loading");
     app.removeChild(loader);
+    start.style.display = 'inline';
     console.log('app', app);
   }
 } // 建立掉落動畫
@@ -939,13 +941,17 @@ function animate() {
   platforms.forEach(function (platform) {
     platform.draw();
   });
-  coins.forEach(function (coin) {
-    coin.draw();
-  });
-  mice.forEach(function (mouse) {
-    mouse.update();
-  });
-  player.update();
+
+  if (playerState !== 'start') {
+    coins.forEach(function (coin) {
+      coin.draw();
+    });
+    mice.forEach(function (mouse) {
+      mouse.update();
+    });
+    player.update();
+  }
+
   goal.draw();
   drawScore();
   drawLife(); // 設定撞到終點
@@ -1041,6 +1047,7 @@ function animate() {
 
   if (player.position.x > goal.position.x && player.position.x < goal.position.x + goal.width - 12 && player.position.y + player.height > goal.position.y) {
     playerState = 'win';
+    win.style.display = 'inline';
     finalScore.innerHTML = "<p>Your score is</p>".concat(score);
     result.innerHTML = 'YOU WIN!';
     win.style.animation = 'Opacity 1s linear 0.2s forwards';
@@ -1063,6 +1070,7 @@ function animate() {
 
   if (life <= 0) {
     playerState = 'lose';
+    win.style.display = 'inline';
     finalScore.innerHTML = '';
     result.innerHTML = 'GAME OVER!';
     win.style.animation = 'Opacity 1s linear 0.2s forwards';
@@ -1168,14 +1176,22 @@ addEventListener('keyup', function (_ref6) {
     }
   }
 });
-btn.addEventListener('click', function (e) {
-  if (e.target.classList.contains('restart')) {
+window.addEventListener('click', function (e) {
+  console.log(e.target);
+  console.log(e.target.classList.contains('restartbtn'));
+
+  if (e.target.classList.contains('restartbtn')) {
     playerState = 'gaming';
     win.style.opacity = 0;
     win.style.animation = '';
     score = 0;
     life = 3;
     init();
+  }
+
+  if (e.target.classList.contains('startbtn')) {
+    playerState = 'gaming';
+    start.style.display = 'none';
   }
 });
 

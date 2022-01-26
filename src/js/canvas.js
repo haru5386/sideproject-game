@@ -243,7 +243,7 @@ function createImage(imageSrc) {
 let platformImage = createImage(platform)
 let platformSmallTallImage = createImage(platformSmallTall)
 
-let playerState = 'gaming'
+let playerState = 'start'
 let player = ''
 let platforms = []
 let genericObjects = []
@@ -255,6 +255,7 @@ let win = document.querySelector(".win")
 let finalScore = document.querySelector(".score")
 let result = document.querySelector(".result")
 let btn = document.querySelector(".btn")
+let start = document.querySelector(".start")
 
 const keys = {
   right: {
@@ -275,7 +276,6 @@ let isLoading = true
 function init() {
   player = new Player()
   goal = new Goal()
-
 
   platformImage = createImage(platform)
 
@@ -640,6 +640,7 @@ function loadingRemove() {
     let app = document.getElementById("app");
     let loader = document.querySelector(".loading");
     app.removeChild(loader);
+    start.style.display = 'inline'
     console.log('app', app)
   }
 }
@@ -651,9 +652,12 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height)
   genericObjects.forEach(genericObject => { genericObject.draw() })
   platforms.forEach(platform => { platform.draw() })
-  coins.forEach(coin => { coin.draw() })
-  mice.forEach(mouse => { mouse.update() })
-  player.update()
+  if (playerState !== 'start') {
+    coins.forEach(coin => { coin.draw() })
+    mice.forEach(mouse => { mouse.update() })
+    player.update()
+
+  }
   goal.draw()
   drawScore()
   drawLife()
@@ -761,6 +765,7 @@ function animate() {
   // 贏的狀況
   if (player.position.x > goal.position.x && player.position.x < goal.position.x + goal.width - 12 && player.position.y + player.height > goal.position.y) {
     playerState = 'win'
+    win.style.display = 'inline'
     finalScore.innerHTML = `<p>Your score is</p>${score}`
     result.innerHTML = 'YOU WIN!'
     win.style.animation = 'Opacity 1s linear 0.2s forwards'
@@ -782,6 +787,7 @@ function animate() {
 
   if (life <= 0) {
     playerState = 'lose'
+    win.style.display = 'inline'
     finalScore.innerHTML = ''
     result.innerHTML = 'GAME OVER!'
     win.style.animation = 'Opacity 1s linear 0.2s forwards'
@@ -882,14 +888,21 @@ addEventListener('keyup', ({ keyCode }) => {
   }
 })
 
-btn.addEventListener('click', (e) => {
-  if (e.target.classList.contains('restart')) {
+window.addEventListener('click', (e) => {
+  console.log(e.target)
+  console.log(e.target.classList.contains('restartbtn'))
+
+  if (e.target.classList.contains('restartbtn')) {
     playerState = 'gaming'
     win.style.opacity = 0
     win.style.animation = ''
     score = 0
     life = 3
     init()
+  }
+  if(e.target.classList.contains('startbtn')) {
+    playerState = 'gaming'
+    start.style.display = 'none'
   }
 
 })

@@ -21,6 +21,20 @@
       position: relative;
     }
 
+    .start {
+      background-color: rgba(255, 255, 255, 0.7);
+      width: 800px;
+      height: 400px;
+      position: absolute;
+      border-radius: 30px;
+      border: 8px solid #e1597c;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: Opacity 1s linear 0.2s backwards;
+      display: none;
+    }
+
     .win {
       background-color: rgba(255, 255, 255, 0.7);
       width: 800px;
@@ -32,10 +46,24 @@
       left: 50%;
       transform: translate(-50%, -50%);
       opacity: 0;
-
+      display: none;
     }
 
-    .win .content {
+    .startword {
+      font-size: 40px;
+    }
+
+    .keyboard {
+      background-color: rgba(255, 255, 255, 0.7);
+      border: 1px solid #fff;
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      margin: 4px;
+      padding: 10px;
+    }
+
+    .content {
       font-size: 60px;
       text-align: center;
       font-weight: 600;
@@ -82,7 +110,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
+
     .loader,
     .loader:before,
     .loader:after {
@@ -166,16 +198,26 @@
     <div class="loading">
       <div class="loader">Loading...</div>
     </div>
-    <div class="win">
+    <div class="start">
       <div class="content">
-        <div class="result"></div>
-        <div class="score">
-          <p>Your score is</p>400
-        </div>
-        <div class="btn restart">Restart!</div>
+        <div class="startword">Please use <span class="keyboard">A</span><span class="keyboard">S</span><span
+            class="keyboard">D</span><span class="keyboard">W</span> to control!</div>
+        <div class="btn startbtn">Let's start!</div>
+
       </div>
+
     </div>
-    <canvas></canvas>
+  </div>
+  <div class="win">
+    <div class="content">
+      <div class="result"></div>
+      <div class="score">
+        <p>Your score is</p>400
+      </div>
+      <div class="btn restartbtn">Restart!</div>
+    </div>
+  </div>
+  <canvas></canvas>
 
   </div>
   <script src="./js/canvas.js"></script>
