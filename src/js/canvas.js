@@ -237,10 +237,17 @@ class Goal {
 function createImage(imageSrc) {
   const image = new Image()
   image.src = imageSrc
+  image.addEventListener('load', () => {
+    image.width
+    console.log('imageWidth', image.width)
+  })
+
   return image
 }
 
+
 let platformImage = createImage(platform)
+
 let platformSmallTallImage = createImage(platformSmallTall)
 
 let playerState = 'start'
@@ -274,18 +281,17 @@ let isLoading = true
 
 // 建立元件
 function init() {
+
   player = new Player()
   goal = new Goal()
+  platformImage.width = 580
+  platformSmallTallImage.width = 292
 
-  platformImage = createImage(platform)
-
-  player = new Player()
-  // mouse = new Mouse({ x: 300, y: 440, d: 100 })
   platforms = [
     new Platform({
+      image: platformSmallTallImage,
       x: platformImage.width * 4 + 300 + platformSmallTallImage.width,
-      y: 350,
-      image: platformSmallTallImage
+      y: 350
     }),
     new Platform({
       x: platformImage.width * 4 + 300 + platformSmallTallImage.width * 2,
@@ -617,6 +623,9 @@ function init() {
     }),
   ]
   scrollOffSet = 0
+  console.log(platforms)
+  console.log(platformImage)
+  console.log(platformImage.width)
 }
 
 // 繪製分數
@@ -651,12 +660,16 @@ function animate() {
   c.fillStyle = 'white'
   c.fillRect(0, 0, canvas.width, canvas.height)
   genericObjects.forEach(genericObject => { genericObject.draw() })
-  platforms.forEach(platform => { platform.draw() })
+  platforms.forEach(platform => {
+    platform.draw()
+  })
+  coins.forEach(coin => { coin.draw() })
+  mice.forEach(mouse => { mouse.update() })
   if (playerState !== 'start') {
+    platforms.forEach(platform => { platform.draw() })
     coins.forEach(coin => { coin.draw() })
     mice.forEach(mouse => { mouse.update() })
     player.update()
-
   }
   goal.draw()
   drawScore()
@@ -755,10 +768,9 @@ function animate() {
   if (player.velocity.y === 0) {
     doubleJump = 0
   }
-  console.log('doubleJump', doubleJump)
 
   // 貓咪撞到頂
-  if (player.position.y + player.velocity.y <= 0 ) {
+  if (player.position.y + player.velocity.y <= 0) {
     player.velocity.y = gravity
   }
 
@@ -799,8 +811,10 @@ function animate() {
   isLoading = false
 }
 
+
 init()
 animate()
+
 
 addEventListener("load", function (event) {
   // All resources finished loading!
@@ -900,7 +914,7 @@ window.addEventListener('click', (e) => {
     life = 3
     init()
   }
-  if(e.target.classList.contains('startbtn')) {
+  if (e.target.classList.contains('startbtn')) {
     playerState = 'gaming'
     start.style.display = 'none'
   }
