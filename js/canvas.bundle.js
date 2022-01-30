@@ -599,6 +599,10 @@ var Goal = /*#__PURE__*/function () {
 function createImage(imageSrc) {
   var image = new Image();
   image.src = imageSrc;
+  image.addEventListener('load', function () {
+    image.width;
+    console.log('imageWidth', image.width);
+  });
   return image;
 }
 
@@ -633,13 +637,12 @@ var isLoading = true; // 建立元件
 function init() {
   player = new Player();
   goal = new Goal();
-  platformImage = createImage(_image_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
-  player = new Player(); // mouse = new Mouse({ x: 300, y: 440, d: 100 })
-
+  platformImage.width = 580;
+  platformSmallTallImage.width = 292;
   platforms = [new Platform({
+    image: platformSmallTallImage,
     x: platformImage.width * 4 + 300 + platformSmallTallImage.width,
-    y: 350,
-    image: platformSmallTallImage
+    y: 350
   }), new Platform({
     x: platformImage.width * 4 + 300 + platformSmallTallImage.width * 2,
     y: 230,
@@ -901,6 +904,9 @@ function init() {
     d: platformSmallTallImage.width
   })];
   scrollOffSet = 0;
+  console.log(platforms);
+  console.log(platformImage);
+  console.log(platformImage.width);
 } // 繪製分數
 
 
@@ -941,8 +947,17 @@ function animate() {
   platforms.forEach(function (platform) {
     platform.draw();
   });
+  coins.forEach(function (coin) {
+    coin.draw();
+  });
+  mice.forEach(function (mouse) {
+    mouse.update();
+  });
 
   if (playerState !== 'start') {
+    platforms.forEach(function (platform) {
+      platform.draw();
+    });
     coins.forEach(function (coin) {
       coin.draw();
     });
@@ -1036,9 +1051,8 @@ function animate() {
 
   if (player.velocity.y === 0) {
     doubleJump = 0;
-  }
+  } // 貓咪撞到頂
 
-  console.log('doubleJump', doubleJump); // 貓咪撞到頂
 
   if (player.position.y + player.velocity.y <= 0) {
     player.velocity.y = gravity;
