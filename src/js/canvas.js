@@ -13,6 +13,17 @@ import mouseImgR from '../image/mouseRight.png'
 import mouseImgL from '../image/mouseLeft.png'
 import mouseImgDied from '../image/mouseDied.png'
 import box from '../image/box.png'
+import backgroundAudio from '../audio/background.wav'
+import coinAudio from '../audio/coin.mp3'
+import lifeMinusAudio from '../audio/lifeminus.mp3'
+import mouseDieAudio from '../audio/mouseDie.mp3'
+import dieAudio from '../audio/die.mp3'
+import jumpAudio from '../audio/jump.mp3'
+import winAudio from '../audio/win.mp3'
+
+
+
+
 
 
 const canvas = document.querySelector('canvas')
@@ -241,13 +252,35 @@ function createImage(imageSrc) {
     image.width
     console.log('imageWidth', image.width)
   })
-
   return image
 }
 
+function createAudio(audioSrc, isLoop) {
+  const audio = new Audio()
+  audio.src = audioSrc
+  audio.loop = isLoop;
+  console.log('audio', audio)
+  return audio
+}
+
+function playAudio(audio) {
+  audio.pause()
+  audio.currentTime = 0;
+  audio.play()
+}
+
+let playBackgroundAudio = createAudio(backgroundAudio, true)
+let playCoinAudio = createAudio(coinAudio, false)
+let playLifeMinusAudio = createAudio(lifeMinusAudio, false)
+let playMouseDieAudio = createAudio(mouseDieAudio, false)
+let playDieAudio = createAudio(dieAudio, false)
+let playJumpAudio = createAudio(jumpAudio, false)
+let playWinAudio = createAudio(winAudio, false)
+
+
+
 
 let platformImage = createImage(platform)
-
 let platformSmallTallImage = createImage(platformSmallTall)
 
 let playerState = 'start'
@@ -261,7 +294,6 @@ let goal = ''
 let win = document.querySelector(".win")
 let finalScore = document.querySelector(".score")
 let result = document.querySelector(".result")
-let btn = document.querySelector(".btn")
 let start = document.querySelector(".start")
 
 const keys = {
@@ -281,7 +313,6 @@ let isLoading = true
 
 // 建立元件
 function init() {
-
   player = new Player()
   goal = new Goal()
   platformImage.width = 580
@@ -623,9 +654,6 @@ function init() {
     }),
   ]
   scrollOffSet = 0
-  console.log(platforms)
-  console.log(platformImage)
-  console.log(platformImage.width)
 }
 
 // 繪製分數
@@ -656,7 +684,8 @@ function loadingRemove() {
 
 // 建立掉落動畫
 function animate() {
-  requestAnimationFrame(animate)
+
+  console.log('playerState', playerState)
   c.fillStyle = 'white'
   c.fillRect(0, 0, canvas.width, canvas.height)
   genericObjects.forEach(genericObject => { genericObject.draw() })
@@ -674,6 +703,7 @@ function animate() {
   goal.draw()
   drawScore()
   drawLife()
+  requestAnimationFrame(animate)
 
   // 設定撞到終點
   if (keys.right.pressed && player.position.x + player.width - 10 > goal.position.x && player.position.x < goal.position.x + goal.width - 20 && player.position.y + player.height > goal.position.y) {
@@ -733,6 +763,7 @@ function animate() {
     if (player.position.x + player.width - 10 > coin.position.x && player.position.x < coin.position.x + coin.width && player.position.y + player.height > coin.position.y && player.position.y < coin.position.y + coin.height) {
       coins.splice(index, 1);
       score += 10
+      playAudio(playCoinAudio)
     }
   })
 
@@ -741,11 +772,15 @@ function animate() {
     if (mouse.alive && player.position.x + player.width > mouse.position.x && player.position.x < mouse.position.x + mouse.width && player.height + player.position.y <= mouse.position.y && player.height + player.position.y + player.velocity.y >= mouse.position.y) {
       score += 50
       mouse.alive = false
+      playAudio(playMouseDieAudio)
       setTimeout(() => { mice.splice(index, 1) }, 1000)
-    } else if (mouse.alive && player.position.x + player.width > mouse.position.x && player.position.x < mouse.position.x + mouse.width && player.height + player.position.y > mouse.position.y && player.position.y + player.velocity.y < mouse.position.y + mouse.height && player.state === 'normal') {
+    } else if (mouse.alive && player.position.x + player.width > mouse.position.x && player.position.x < mouse.position.x + mouse.width && player.height + player.position.y > mouse.position.y && player.position.y + player.velocity.y < mouse.position.y + mouse.height && player.state === 'normal' && playerState === 'gaming') {
       life -= 1
       player.state = 'super'
       player.statement()
+      if (life > 0) {
+        playAudio(playLifeMinusAudio)
+      }
     }
   })
 
@@ -783,6 +818,8 @@ function animate() {
     win.style.animation = 'Opacity 1s linear 0.2s forwards'
     keys.left.pressed = false
     keys.right.pressed = false
+    playWinAudio.play()
+
     console.log('win')
   }
 
@@ -791,6 +828,9 @@ function animate() {
     life -= 1
     if (life > 0) {
       init()
+    }
+    if (life > 0) {
+      playAudio(playLifeMinusAudio)
     }
     console.log('you die')
   }
@@ -805,7 +845,6 @@ function animate() {
     win.style.animation = 'Opacity 1s linear 0.2s forwards'
     keys.left.pressed = false
     keys.right.pressed = false
-    console.log('lose')
   }
 
   isLoading = false
@@ -858,8 +897,10 @@ addEventListener('keydown', ({ keyCode }) => {
         console.log('up')
         doubleJump += 1
         if (doubleJump <= 1) {
+          playAudio(playJumpAudio)
           player.velocity.y -= 9
         } else if (doubleJump === 2) {
+          playAudio(playJumpAudio)
           player.velocity.y -= 8
         }
         break
@@ -912,11 +953,14 @@ window.addEventListener('click', (e) => {
     win.style.animation = ''
     score = 0
     life = 3
+    playAudio(playBackgroundAudio)
     init()
   }
   if (e.target.classList.contains('startbtn')) {
     playerState = 'gaming'
     start.style.display = 'none'
+    playAudio(playBackgroundAudio)
+
   }
 
 })

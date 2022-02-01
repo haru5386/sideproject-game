@@ -86,6 +86,97 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/audio/background.wav":
+/*!**********************************!*\
+  !*** ./src/audio/background.wav ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "b6ffe2423fbebd8182016ff8cbaf52a3.wav");
+
+/***/ }),
+
+/***/ "./src/audio/coin.mp3":
+/*!****************************!*\
+  !*** ./src/audio/coin.mp3 ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "4d98dfe8617f6968294252efbff81dfe.mp3");
+
+/***/ }),
+
+/***/ "./src/audio/die.mp3":
+/*!***************************!*\
+  !*** ./src/audio/die.mp3 ***!
+  \***************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "989bf13b40852e23c0171b49d9089574.mp3");
+
+/***/ }),
+
+/***/ "./src/audio/jump.mp3":
+/*!****************************!*\
+  !*** ./src/audio/jump.mp3 ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "44b6e76ea5fc50fbbc938210d579d442.mp3");
+
+/***/ }),
+
+/***/ "./src/audio/lifeminus.mp3":
+/*!*********************************!*\
+  !*** ./src/audio/lifeminus.mp3 ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "d0c3c875706b8589865203925e3e938b.mp3");
+
+/***/ }),
+
+/***/ "./src/audio/mouseDie.mp3":
+/*!********************************!*\
+  !*** ./src/audio/mouseDie.mp3 ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "0f7c3383b94419cae48b5b30dc4d454f.mp3");
+
+/***/ }),
+
+/***/ "./src/audio/win.mp3":
+/*!***************************!*\
+  !*** ./src/audio/win.mp3 ***!
+  \***************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "642b4a096d2b570f991147e3a997c32d.mp3");
+
+/***/ }),
+
 /***/ "./src/image/background.png":
 /*!**********************************!*\
   !*** ./src/image/background.png ***!
@@ -305,11 +396,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _image_mouseLeft_png__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../image/mouseLeft.png */ "./src/image/mouseLeft.png");
 /* harmony import */ var _image_mouseDied_png__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../image/mouseDied.png */ "./src/image/mouseDied.png");
 /* harmony import */ var _image_box_png__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../image/box.png */ "./src/image/box.png");
+/* harmony import */ var _audio_background_wav__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../audio/background.wav */ "./src/audio/background.wav");
+/* harmony import */ var _audio_coin_mp3__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../audio/coin.mp3 */ "./src/audio/coin.mp3");
+/* harmony import */ var _audio_lifeminus_mp3__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../audio/lifeminus.mp3 */ "./src/audio/lifeminus.mp3");
+/* harmony import */ var _audio_mouseDie_mp3__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../audio/mouseDie.mp3 */ "./src/audio/mouseDie.mp3");
+/* harmony import */ var _audio_die_mp3__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../audio/die.mp3 */ "./src/audio/die.mp3");
+/* harmony import */ var _audio_jump_mp3__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../audio/jump.mp3 */ "./src/audio/jump.mp3");
+/* harmony import */ var _audio_win_mp3__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../audio/win.mp3 */ "./src/audio/win.mp3");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+
+
+
+
 
 
 
@@ -606,6 +711,27 @@ function createImage(imageSrc) {
   return image;
 }
 
+function createAudio(audioSrc, isLoop) {
+  var audio = new Audio();
+  audio.src = audioSrc;
+  audio.loop = isLoop;
+  console.log('audio', audio);
+  return audio;
+}
+
+function playAudio(audio) {
+  audio.pause();
+  audio.currentTime = 0;
+  audio.play();
+}
+
+var playBackgroundAudio = createAudio(_audio_background_wav__WEBPACK_IMPORTED_MODULE_15__["default"], true);
+var playCoinAudio = createAudio(_audio_coin_mp3__WEBPACK_IMPORTED_MODULE_16__["default"], false);
+var playLifeMinusAudio = createAudio(_audio_lifeminus_mp3__WEBPACK_IMPORTED_MODULE_17__["default"], false);
+var playMouseDieAudio = createAudio(_audio_mouseDie_mp3__WEBPACK_IMPORTED_MODULE_18__["default"], false);
+var playDieAudio = createAudio(_audio_die_mp3__WEBPACK_IMPORTED_MODULE_19__["default"], false);
+var playJumpAudio = createAudio(_audio_jump_mp3__WEBPACK_IMPORTED_MODULE_20__["default"], false);
+var playWinAudio = createAudio(_audio_win_mp3__WEBPACK_IMPORTED_MODULE_21__["default"], false);
 var platformImage = createImage(_image_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
 var platformSmallTallImage = createImage(_image_platformSmallTall_png__WEBPACK_IMPORTED_MODULE_3__["default"]);
 var playerState = 'start';
@@ -618,7 +744,6 @@ var goal = '';
 var win = document.querySelector(".win");
 var finalScore = document.querySelector(".score");
 var result = document.querySelector(".result");
-var btn = document.querySelector(".btn");
 var start = document.querySelector(".start");
 var keys = {
   right: {
@@ -904,9 +1029,6 @@ function init() {
     d: platformSmallTallImage.width
   })];
   scrollOffSet = 0;
-  console.log(platforms);
-  console.log(platformImage);
-  console.log(platformImage.width);
 } // 繪製分數
 
 
@@ -938,7 +1060,7 @@ function loadingRemove() {
 
 
 function animate() {
-  requestAnimationFrame(animate);
+  console.log('playerState', playerState);
   c.fillStyle = 'white';
   c.fillRect(0, 0, canvas.width, canvas.height);
   genericObjects.forEach(function (genericObject) {
@@ -969,7 +1091,8 @@ function animate() {
 
   goal.draw();
   drawScore();
-  drawLife(); // 設定撞到終點
+  drawLife();
+  requestAnimationFrame(animate); // 設定撞到終點
 
   if (keys.right.pressed && player.position.x + player.width - 10 > goal.position.x && player.position.x < goal.position.x + goal.width - 20 && player.position.y + player.height > goal.position.y) {
     player.velocity.x = 0;
@@ -1021,6 +1144,7 @@ function animate() {
     if (player.position.x + player.width - 10 > coin.position.x && player.position.x < coin.position.x + coin.width && player.position.y + player.height > coin.position.y && player.position.y < coin.position.y + coin.height) {
       coins.splice(index, 1);
       score += 10;
+      playAudio(playCoinAudio);
     }
   }); // 老鼠碰撞
 
@@ -1028,13 +1152,18 @@ function animate() {
     if (mouse.alive && player.position.x + player.width > mouse.position.x && player.position.x < mouse.position.x + mouse.width && player.height + player.position.y <= mouse.position.y && player.height + player.position.y + player.velocity.y >= mouse.position.y) {
       score += 50;
       mouse.alive = false;
+      playAudio(playMouseDieAudio);
       setTimeout(function () {
         mice.splice(index, 1);
       }, 1000);
-    } else if (mouse.alive && player.position.x + player.width > mouse.position.x && player.position.x < mouse.position.x + mouse.width && player.height + player.position.y > mouse.position.y && player.position.y + player.velocity.y < mouse.position.y + mouse.height && player.state === 'normal') {
+    } else if (mouse.alive && player.position.x + player.width > mouse.position.x && player.position.x < mouse.position.x + mouse.width && player.height + player.position.y > mouse.position.y && player.position.y + player.velocity.y < mouse.position.y + mouse.height && player.state === 'normal' && playerState === 'gaming') {
       life -= 1;
       player.state = 'super';
       player.statement();
+
+      if (life > 0) {
+        playAudio(playLifeMinusAudio);
+      }
     }
   }); // 平台碰撞
 
@@ -1067,6 +1196,7 @@ function animate() {
     win.style.animation = 'Opacity 1s linear 0.2s forwards';
     keys.left.pressed = false;
     keys.right.pressed = false;
+    playWinAudio.play();
     console.log('win');
   } //跌到谷底
 
@@ -1076,6 +1206,10 @@ function animate() {
 
     if (life > 0) {
       init();
+    }
+
+    if (life > 0) {
+      playAudio(playLifeMinusAudio);
     }
 
     console.log('you die');
@@ -1090,7 +1224,6 @@ function animate() {
     win.style.animation = 'Opacity 1s linear 0.2s forwards';
     keys.left.pressed = false;
     keys.right.pressed = false;
-    console.log('lose');
   }
 
   isLoading = false;
@@ -1142,8 +1275,10 @@ addEventListener('keydown', function (_ref5) {
         doubleJump += 1;
 
         if (doubleJump <= 1) {
+          playAudio(playJumpAudio);
           player.velocity.y -= 9;
         } else if (doubleJump === 2) {
+          playAudio(playJumpAudio);
           player.velocity.y -= 8;
         }
 
@@ -1200,12 +1335,14 @@ window.addEventListener('click', function (e) {
     win.style.animation = '';
     score = 0;
     life = 3;
+    playAudio(playBackgroundAudio);
     init();
   }
 
   if (e.target.classList.contains('startbtn')) {
     playerState = 'gaming';
     start.style.display = 'none';
+    playAudio(playBackgroundAudio);
   }
 });
 
